@@ -43,7 +43,7 @@ def parse_trade(raw):
         interval_partition=event_timestamp.replace(minute=0, second=0, microsecond=0),
     )
 
-BATCH_SIZE = 1000
+BATCH_SIZE = 10000
 
 async def listen_and_store():
     url = "wss://fstream.binance.com/ws/!markPrice@arr"
