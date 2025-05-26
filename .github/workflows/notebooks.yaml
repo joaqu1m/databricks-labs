@@ -23,7 +23,25 @@ jobs:
       - name: Install Databricks CLI
         run: |
           pip install databricks-cli
+          databricks jobs configure --version=2.1
 
       - name: Run Databricks command
         run: |
-          databricks jobs create --json "$(cat jobs/binance_market_trades.json)"
+          for file in jobs/*.json; do
+            echo "Processing $file ..."
+            JOB_NAME=$(jq -r .name "$file")
+            if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
+              echo "  Skipping $file because it has no 'name' field"
+              continue
+            fi
+
+            JOB_ID=$(databricks jobs list --output JSON | jq -r --arg name "$JOB_NAME" '.jobs[] | select(.settings.name == $name) | .job_id')
+
+            if [ -z "$JOB_ID" ]; then
+              echo "  Creating new job: $JOB_NAME"
+              databricks jobs create --json "$(cat "$file")"
+            else
+              echo "  Updating existing job: $JOB_NAME with ID $JOB_ID"
+              databricks jobs reset --job-id "$JOB_ID" --json "$(cat "$file")"
+            fi
+          done
