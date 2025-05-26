@@ -52,7 +52,7 @@ async def listen_and_store():
 
     async with websockets.connect(url) as ws:
         buffer = []
-        batch_size = 10
+        batch_size = 100
 
         while True:
             data = await ws.recv()
@@ -69,6 +69,6 @@ async def listen_and_store():
                     .saveAsTable("bronze_binance_stream")
 
                 buffer = []
-                print(f"Lote salvo: {batch_size} registros")
+                print(f"Batch saved with {batch_size} records")
 
 await listen_and_store()
