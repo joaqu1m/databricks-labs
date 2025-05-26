@@ -1,0 +1,29 @@
+name: Run Databricks CLI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'notebooks/**'
+      - '.github/workflows/notebooks.yaml'
+
+jobs:
+  run-databricks-command:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Databricks CLI
+        run: |
+          pip install databricks-cli
+
+      - name: Run Databricks command
+        run: |
+          databricks fs ls dbfs:/

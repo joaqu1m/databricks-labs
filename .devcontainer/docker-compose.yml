@@ -1,0 +1,9 @@
+name: databricks-labs
+version: '3.8'
+services:
+  devcontainer:
+    container_name: databricks-labs-devcontainer
+    image: mcr.microsoft.com/devcontainers/base:bullseye
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
