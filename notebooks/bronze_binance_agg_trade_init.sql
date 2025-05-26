@@ -3,7 +3,7 @@ USE dbacademy.labuser10394792_1748293561
 
 -- COMMAND ----------
 
-CREATE TABLE bronze_binance_stream (
+CREATE TABLE bronze_binance_agg_trade (
   event_type STRING,
   event_timestamp TIMESTAMP,
   symbol STRING,

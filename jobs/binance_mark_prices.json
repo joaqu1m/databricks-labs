@@ -1,8 +1,8 @@
 {
-    "name": "Binance Market Trades Ingestion",
+    "name": "Binance Mark Prices Ingestion",
     "existing_cluster_id": "0526-210703-18p5x2x0",
     "notebook_task": {
-        "notebook_path": "/Shared/Git/bronze_binance_agg_trade_stream_ingestion.py"
+        "notebook_path": "/Shared/Git/bronze_binance_mark_price_stream_ingestion.py"
     },
     "max_retries": 1,
     "timeout_seconds": 0

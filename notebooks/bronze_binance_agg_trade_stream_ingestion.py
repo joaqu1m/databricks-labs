@@ -8,7 +8,6 @@
 
 # COMMAND ----------
 
-import asyncio
 import websockets
 import json
 from datetime import datetime
@@ -48,7 +47,7 @@ def parse_trade(raw):
     )
 
 async def listen_and_store():
-    url = "wss://fstream.binance.com/ws/bnbusdt@aggTrade"
+    url = "wss://fstream.binance.com/ws/btcusdt@aggTrade"
 
     async with websockets.connect(url) as ws:
         buffer = []
@@ -66,7 +65,7 @@ async def listen_and_store():
                 df.write.format("delta") \
                     .mode("append") \
                     .partitionBy("trade_date") \
-                    .saveAsTable("bronze_binance_stream")
+                    .saveAsTable("bronze_binance_agg_trade")
 
                 buffer = []
                 print(f"{datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')} Batch saved with {batch_size} records")
