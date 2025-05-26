@@ -1,4 +1,4 @@
-name: Run Databricks Notebooks
+name: Update Databricks Notebooks
 
 on:
   workflow_dispatch:
@@ -10,38 +10,49 @@ on:
       - '.github/workflows/notebooks.yaml'
 
 jobs:
-  run-databricks-command:
+  deploy-databricks-notebooks:
     runs-on: ubuntu-latest
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_JOBS_API_VERSION: 2.1
+      DATABRICKS_WORKSPACE_PATH: '/Shared/GitHub_Repo_Notebooks'
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
       - name: Install Databricks CLI
         run: |
           pip install databricks-cli
 
-      - name: Run Databricks command
+      - name: Deploy Databricks Notebooks
         run: |
-          for file in jobs/*.json; do
-            echo "Processing $file ..."
-            JOB_NAME=$(jq -r .name "$file")
-            if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
-              echo "  Skipping $file because it has no 'name' field"
-              continue
-            fi
+          find notebooks -type f \( -name "*.py" -o -name "*.scala" -o -name "*.sql" -o -name "*.r" \) -print0 | while IFS= read -r -d $'\0' notebook_file; do
+            echo "Processing notebook: $notebook_file"
 
-            JOB_ID=$(databricks jobs list --output JSON | jq -r --arg name "$JOB_NAME" '.jobs[] | select(.settings.name == $name) | .job_id')
+            RELATIVE_PATH="${notebook_file#notebooks/}"
+            TARGET_WORKSPACE_PATH="${DATABRICKS_WORKSPACE_PATH}/${RELATIVE_PATH}"
+            TARGET_WORKSPACE_PATH=$(echo "${TARGET_WORKSPACE_PATH}" | sed 's#//#/#g')
 
-            if [ -z "$JOB_ID" ]; then
-              echo "  Creating new job: $JOB_NAME"
-              databricks jobs create --json "$(cat "$file")"
+            TARGET_DIR=$(dirname "${TARGET_WORKSPACE_PATH}")
+            echo "Ensuring directory ${TARGET_DIR} exists in Databricks workspace..."
+            databricks workspace mkdirs "${TARGET_DIR}" || echo "Target directory might already exist."
+
+            echo "Importing ${notebook_file} to ${TARGET_WORKSPACE_PATH} ..."
+            databricks workspace import --language "$(echo ${notebook_file##*.} | tr '[:lower:]' '[:upper:]')" --format SOURCE --overwrite "${notebook_file}" "${TARGET_WORKSPACE_PATH}"
+
+            if [ $? -eq 0 ]; then
+              echo "Successfully imported/updated ${TARGET_WORKSPACE_PATH}"
             else
-              echo "  Updating existing job: $JOB_NAME with ID $JOB_ID"
-              databricks jobs reset --job-id "$JOB_ID" --json "$(cat "$file")"
+              echo "Failed to import/update ${TARGET_WORKSPACE_PATH}"
+              # Você pode querer falhar o workflow aqui, dependendo da sua necessidade
+              # exit 1 
             fi
+            echo "---"
           done
+          echo "Notebook deployment process finished"

@@ -1,0 +1,47 @@
+name: Run Databricks Jobs
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'jobs/**'
+      - '.github/workflows/jobs.yaml'
+
+jobs:
+  run-databricks-command:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_JOBS_API_VERSION: 2.1
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        run: |
+          pip install databricks-cli
+
+      - name: Run Databricks command
+        run: |
+          for file in jobs/*.json; do
+            echo "Processing $file ..."
+            JOB_NAME=$(jq -r .name "$file")
+            if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
+              echo "  Skipping $file because it has no 'name' field"
+              continue
+            fi
+
+            JOB_ID=$(databricks jobs list --output JSON | jq -r --arg name "$JOB_NAME" '.jobs[] | select(.settings.name == $name) | .job_id')
+
+            if [ -z "$JOB_ID" ]; then
+              echo "  Creating new job: $JOB_NAME"
+              databricks jobs create --json "$(cat "$file")"
+            else
+              echo "  Updating existing job: $JOB_NAME with ID $JOB_ID"
+              databricks jobs reset --job-id "$JOB_ID" --json "$(cat "$file")"
+            fi
+          done

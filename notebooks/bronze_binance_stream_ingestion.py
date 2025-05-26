@@ -3,6 +3,11 @@
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC USE dbacademy.labuser10394792_1748213278
+
+# COMMAND ----------
+
 import asyncio
 import websockets
 import json
