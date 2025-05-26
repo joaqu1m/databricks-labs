@@ -1,4 +1,4 @@
-name: Run Databricks Jobs
+name: Update Databricks Jobs
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       - '.github/workflows/jobs.yaml'
 
 jobs:
-  run-databricks-command:
+  update-databricks-jobs:
     runs-on: ubuntu-latest
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}

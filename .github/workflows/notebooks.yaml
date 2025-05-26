@@ -10,7 +10,7 @@ on:
       - '.github/workflows/notebooks.yaml'
 
 jobs:
-  deploy-databricks-notebooks:
+  update-databricks-notebooks:
     runs-on: ubuntu-latest
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
