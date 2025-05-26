@@ -1,4 +1,4 @@
-name: Run Databricks CLI
+name: Run Databricks Notebooks
 
 on:
   workflow_dispatch:
@@ -26,4 +26,4 @@ jobs:
 
       - name: Run Databricks command
         run: |
-          databricks fs ls dbfs:/
+          databricks jobs create --json "$(cat jobs/binance_market_trades.json)"
