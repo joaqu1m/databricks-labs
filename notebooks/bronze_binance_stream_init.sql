@@ -1,5 +1,5 @@
 -- Databricks notebook source
-USE dbacademy.labuser10394792_1748213278
+USE dbacademy.labuser10394792_1748293561
 
 -- COMMAND ----------
 
