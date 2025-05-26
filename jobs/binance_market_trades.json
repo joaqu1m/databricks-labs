@@ -4,7 +4,6 @@
     "notebook_task": {
         "notebook_path": "/Users/labuser10394792_1748213278@vocareum.com/bronze_binance_stream_ingestion"
     },
-    "max_retries": 1,
     "timeout_seconds": 0,
     "continuous": {
         "pause_status": "UNPAUSED"

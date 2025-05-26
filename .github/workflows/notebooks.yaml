@@ -65,7 +65,7 @@ jobs:
             esac
 
             echo "Importing ${notebook_file} to ${TARGET_WORKSPACE_PATH} with language ${LANGUAGE} ..."
-            databricks workspace import --language "$(LANGUAGE}" --format SOURCE --overwrite "${notebook_file}" "${TARGET_WORKSPACE_PATH}"
+            databricks workspace import --language "${LANGUAGE}" --format SOURCE --overwrite "${notebook_file}" "${TARGET_WORKSPACE_PATH}"
 
             if [ $? -eq 0 ]; then
               echo "Successfully imported/updated ${TARGET_WORKSPACE_PATH}"
@@ -74,6 +74,6 @@ jobs:
               # Você pode querer falhar o workflow aqui, dependendo da sua necessidade
               # exit 1 
             fi
-            echo "---"
+          echo "---"
           done
           echo "Notebook deployment process finished"
