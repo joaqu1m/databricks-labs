@@ -27,12 +27,12 @@ jobs:
       - name: Configure databricks CLI with Jobs API 2.1
         run: |
           mkdir -p ~/.databricks
-          cat > ~/.databrickscfg <<EOF
-[DEFAULT]
-host = $DATABRICKS_HOST
-token = $DATABRICKS_TOKEN
-jobs_api_version = 2.1
-EOF
+          cat > ~/.databrickscfg <<-EOF
+          [DEFAULT]
+          host = $DATABRICKS_HOST
+          token = $DATABRICKS_TOKEN
+          jobs_api_version = 2.1
+          EOF
 
       - name: Run Databricks command
         run: |
