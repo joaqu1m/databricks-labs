@@ -69,6 +69,6 @@ async def listen_and_store():
                     .saveAsTable("bronze_binance_stream")
 
                 buffer = []
-                print(f"Batch saved with {batch_size} records")
+                print(f"{datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')} Batch saved with {batch_size} records")
 
 await listen_and_store()
