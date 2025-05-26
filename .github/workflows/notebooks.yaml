@@ -15,7 +15,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_WORKSPACE_PATH: '/Shared/GitHub_Repo_Notebooks'
+      DATABRICKS_WORKSPACE_PATH: '/Users/labuser10394792_1748213278@vocareum.com'
 
     steps:
       - name: Checkout repo
@@ -43,8 +43,29 @@ jobs:
             echo "Ensuring directory ${TARGET_DIR} exists in Databricks workspace..."
             databricks workspace mkdirs "${TARGET_DIR}" || echo "Target directory might already exist."
 
-            echo "Importing ${notebook_file} to ${TARGET_WORKSPACE_PATH} ..."
-            databricks workspace import --language "$(echo ${notebook_file##*.} | tr '[:lower:]' '[:upper:]')" --format SOURCE --overwrite "${notebook_file}" "${TARGET_WORKSPACE_PATH}"
+            EXTENSION_LOWER=$(echo "${notebook_file##*.}")
+            LANGUAGE=""
+            case "$EXTENSION_LOWER" in
+              py)
+                LANGUAGE="PYTHON"
+                ;;
+              scala)
+                LANGUAGE="SCALA"
+                ;;
+              sql)
+                LANGUAGE="SQL"
+                ;;
+              r)
+                LANGUAGE="R"
+                ;;
+              *)
+                echo "Unsupported file extension: .$EXTENSION_LOWER for file $notebook_file. Skipping."
+                continue # Pula para o próximo arquivo no loop
+                ;;
+            esac
+
+            echo "Importing ${notebook_file} to ${TARGET_WORKSPACE_PATH} with language ${LANGUAGE} ..."
+            databricks workspace import --language "$(LANGUAGE}" --format SOURCE --overwrite "${notebook_file}" "${TARGET_WORKSPACE_PATH}"
 
             if [ $? -eq 0 ]; then
               echo "Successfully imported/updated ${TARGET_WORKSPACE_PATH}"
