@@ -15,6 +15,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_JOBS_API_VERSION: 2.1
 
     steps:
       - name: Checkout repo
@@ -23,16 +24,6 @@ jobs:
       - name: Install Databricks CLI
         run: |
           pip install databricks-cli
-
-      - name: Configure databricks CLI with Jobs API 2.1
-        run: |
-          mkdir -p ~/.databricks
-          cat > ~/.databrickscfg <<-EOF
-          [DEFAULT]
-          host = $DATABRICKS_HOST
-          token = $DATABRICKS_TOKEN
-          jobs_api_version = 2.1
-          EOF
 
       - name: Run Databricks command
         run: |
