@@ -2,7 +2,7 @@
     "name": "Binance Market Trades Ingestion",
     "existing_cluster_id": "0525-224844-dyen2raq",
     "notebook_task": {
-        "notebook_path": "/Users/labuser10394792_1748213278@vocareum.com/bronze_binance_stream_ingestion.py"
+        "notebook_path": "/Shared/Git/bronze_binance_stream_ingestion.py"
     },
     "max_retries": 1,
     "timeout_seconds": 0

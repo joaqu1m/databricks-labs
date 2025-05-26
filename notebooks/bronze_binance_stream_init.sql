@@ -1,3 +1,8 @@
+-- Databricks notebook source
+USE dbacademy.labuser10394792_1748213278
+
+-- COMMAND ----------
+
 CREATE TABLE bronze_binance_stream (
   event_type STRING,
   event_timestamp TIMESTAMP,

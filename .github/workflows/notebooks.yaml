@@ -15,7 +15,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_WORKSPACE_PATH: '/Users/labuser10394792_1748213278@vocareum.com'
+      DATABRICKS_WORKSPACE_PATH: '/Shared/Git'
 
     steps:
       - name: Checkout repo
