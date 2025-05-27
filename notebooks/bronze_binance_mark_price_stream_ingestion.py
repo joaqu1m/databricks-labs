@@ -4,13 +4,13 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC USE dbacademy.labuser10394792_1748293561
+# MAGIC USE dbacademy.labuser10394792_1748311734
 
 # COMMAND ----------
 
 import websockets
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 from pyspark.sql.types import StructType, StructField, StringType, TimestampType
 from pyspark.sql import Row
 import pytz
