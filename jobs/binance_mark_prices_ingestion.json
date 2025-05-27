@@ -6,5 +6,5 @@
     },
     "max_retries": 1,
     "timeout_seconds": 0,
-    "max_concurrent_runs": 0
+    "max_concurrent_runs": 1
 }
