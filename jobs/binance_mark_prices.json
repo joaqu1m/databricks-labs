@@ -12,5 +12,10 @@
                 "notebook_path": "/Shared/Git/silver_binance_mark_price_merge.sql"
             }
         }
-    ]
+    ],
+    "schedule": {
+        "quartz_cron_expression": "0 0/5 * ? * *",
+        "timezone_id": "America/Sao_Paulo",
+        "pause_status": "UNPAUSED"
+    }
 }
