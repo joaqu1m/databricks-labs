@@ -5,5 +5,6 @@
         "notebook_path": "/Shared/Git/bronze_binance_mark_price_stream_ingestion.py"
     },
     "max_retries": 1,
-    "timeout_seconds": 0
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 0
 }
