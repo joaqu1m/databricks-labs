@@ -1,0 +1,16 @@
+{
+    "name": "Binance Mark Prices",
+    "tasks": [
+        {
+            "task_key": "Silver",
+            "description": "Silver Binance Mark Prices Merge",
+            "existing_cluster_id": "0526-210703-18p5x2x0",
+            "max_retries": 1,
+            "timeout_seconds": 450,
+            "max_concurrent_runs": 1,
+            "notebook_task": {
+                "notebook_path": "/Shared/Git/silver_binance_mark_price_merge.sql"
+            }
+        }
+    ]
+}
