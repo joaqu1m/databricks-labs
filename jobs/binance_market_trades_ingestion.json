@@ -1,6 +1,6 @@
 {
     "name": "Binance Market Trades Ingestion",
-    "existing_cluster_id": "0526-210703-18p5x2x0",
+    "existing_cluster_id": "0527-020929-w1o58jct",
     "notebook_task": {
         "notebook_path": "/Shared/Git/bronze_binance_agg_trade_stream_ingestion.py"
     },
